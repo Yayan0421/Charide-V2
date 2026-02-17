@@ -434,12 +434,15 @@ app.post('/rides', authRequired, passengerRequired, async (req, res) => {
       created_at: nowIso()
     };
 
+    console.log('[SERVER] Creating ride for passenger', req.userId, 'payload=', payload);
+
     const { data, error } = await supabaseAdmin
       .from('rides')
       .insert([payload])
       .select()
       .single();
 
+    console.log('[SERVER] Ride insert result for passenger', req.userId, 'data=', data, 'error=', error && error.message);
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -801,6 +804,8 @@ app.get('/driver/requests', authRequired, driverRequired, async (req, res) => {
       .order('created_at', { ascending: false });
 
     if (error) return res.status(400).json({ error: error.message });
+
+    console.log('[SERVER] /driver/requests fetched', (rides || []).length, 'rides for driver request by user', req.userId);
 
     const passengerIds = Array.from(new Set((rides || []).map(r => r.passenger_id).filter(Boolean)));
     let passengerMap = new Map();
