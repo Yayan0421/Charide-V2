@@ -172,7 +172,7 @@ function renderRideCard(ride, type) {
   }
 
   return card;
-
+}
 
 async function completeRide(rideId) {
   try {
@@ -182,8 +182,6 @@ async function completeRide(rideId) {
   } catch (err) {
     Swal.fire({ icon: 'error', title: 'Complete failed', text: err.message || 'Unable to complete ride.' });
   }
-}
-  return card;
 }
 
 async function loadRequests() {
