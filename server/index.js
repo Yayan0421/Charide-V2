@@ -808,7 +808,7 @@ app.get('/driver/requests', authRequired, driverRequired, async (req, res) => {
       .from('rides')
       .select('*')
       .is('driver_id', null)
-      .in('status', [rideStatus.REQUESTED, rideStatus.PENDING])
+      .in('status', [rideStatus.REQUESTED, rideStatus.PENDING, rideStatus.PAID])
       .order('created_at', { ascending: false });
 
     if (error) return res.status(400).json({ error: error.message });
