@@ -777,15 +777,17 @@ app.get('/driver/rides', authRequired, driverRequired, async (req, res) => {
 
 app.get('/driver/requests', authRequired, driverRequired, async (req, res) => {
   try {
-    const { data: driverMeta, error: driverMetaError } = await supabaseAdmin
+    const { data: driverRows, error: driverMetaError } = await supabaseAdmin
       .from('drivers')
       .select('is_online')
       .eq('user_id', req.userId)
-      .single();
+      .limit(1);
 
     if (driverMetaError) {
       return res.status(400).json({ error: driverMetaError.message });
     }
+
+    const driverMeta = (driverRows && driverRows.length > 0) ? driverRows[0] : null;
 
     if (!driverMeta || !driverMeta.is_online) {
       return res.json({ rides: [] });
