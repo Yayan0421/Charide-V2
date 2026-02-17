@@ -53,8 +53,8 @@ const supabaseAuth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: false }
 });
 
-const passengerDir = path.join(__dirname, '..', 'Charide(passenger)');
-const driverDir = path.join(__dirname, '..', 'ChaRide(driver)');
+const passengerDir = path.join(__dirname, '..', 'charide-passenger');
+const driverDir = path.join(__dirname, '..', 'charide-driver');
 const adminDir = path.join(__dirname, '..', 'admin');
 
 app.use('/passenger', express.static(passengerDir));
