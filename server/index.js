@@ -460,6 +460,8 @@ app.put('/rides/:id/assign', authRequired, passengerRequired, async (req, res) =
       return res.status(400).json({ error: 'Driver ID is required' });
     }
 
+    console.log('[SERVER] Passenger', req.userId, 'assigning driver', driver_id, 'to ride', req.params.id);
+
     const { data, error } = await supabaseAdmin
       .from('rides')
       .update({ driver_id, status: rideStatus.ASSIGNED })
@@ -469,8 +471,11 @@ app.put('/rides/:id/assign', authRequired, passengerRequired, async (req, res) =
       .single();
 
     if (error) {
+      console.log('[SERVER] Assign error for ride', req.params.id, 'error=', error && error.message);
       return res.status(400).json({ error: error.message });
     }
+
+    console.log('[SERVER] Ride assigned result:', data);
 
     return res.json({ ride: data });
   } catch (err) {
@@ -497,8 +502,11 @@ app.put('/rides/:id/status', authRequired, passengerRequired, async (req, res) =
       .single();
 
     if (error) {
+      console.log('[SERVER] Passenger status update error for ride', req.params.id, 'error=', error && error.message);
       return res.status(400).json({ error: error.message });
     }
+
+    console.log('[SERVER] Passenger updated ride', req.params.id, 'to status', status, 'result=', data);
 
     return res.json({ ride: data });
   } catch (err) {
@@ -841,6 +849,7 @@ app.get('/driver/requests', authRequired, driverRequired, async (req, res) => {
 
 app.put('/driver/rides/:id/accept', authRequired, driverRequired, async (req, res) => {
   try {
+    console.log('[SERVER] Driver', req.userId, 'attempting to accept ride', req.params.id);
     const { data: ride, error } = await supabaseAdmin
       .from('rides')
       .select('*')
@@ -860,7 +869,12 @@ app.put('/driver/rides/:id/accept', authRequired, driverRequired, async (req, re
       .select()
       .single();
 
-    if (updateError) return res.status(400).json({ error: updateError.message });
+    if (updateError) {
+      console.log('[SERVER] Driver accept updateError for ride', req.params.id, 'error=', updateError.message);
+      return res.status(400).json({ error: updateError.message });
+    }
+
+    console.log('[SERVER] Driver', req.userId, 'accepted ride', req.params.id, 'result=', updated);
 
     return res.json({ ride: updated });
   } catch (err) {
@@ -881,7 +895,12 @@ app.put('/driver/rides/:id/status', authRequired, driverRequired, async (req, re
       .select()
       .single();
 
-    if (error) return res.status(400).json({ error: error.message });
+    if (error) {
+      console.log('[SERVER] Driver status update error for ride', req.params.id, 'error=', error && error.message);
+      return res.status(400).json({ error: error.message });
+    }
+
+    console.log('[SERVER] Driver', req.userId, 'updated ride', req.params.id, 'to status', status, 'result=', updated);
     return res.json({ ride: updated });
   } catch (err) {
     return res.status(500).json({ error: 'Failed to update ride status' });
