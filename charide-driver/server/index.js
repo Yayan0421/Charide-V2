@@ -86,6 +86,15 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
 
+// Serve driver UI when requests target /driver or /driver/*
+app.get('/driver', (req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
+});
+
+app.get('/driver/*', (req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
+});
+
 app.post('/auth/signup', async (req, res) => {
   try {
     const { email, password, full_name, phone, vehicle_type, vehicle_plate } = req.body || {};
