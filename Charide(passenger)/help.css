@@ -1,0 +1,263 @@
+:root {
+  --brand: #16a34a;
+  --brand-2: #33d69f;
+  --accent: #33d69f;
+  --muted: #6b7e79;
+  --text: #fef3c7;
+  --success: #dcfce7;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f5c2e 0%, #0a3d1f 100%);
+  color: var(--text);
+  margin: 0;
+  padding: 24px 24px 24px 260px; /* space for sidebar */
+}
+
+.main-content{
+  width: 100%;
+}
+
+/* ===== Sidebar ===== */
+.sidebar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 230px;
+  height: 100vh;
+  background: #16a34a;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px;
+  z-index: 1000;
+  box-shadow: 6px 0 20px rgba(0,0,0,0.25);
+}
+
+.sidebar-top{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.brand img{
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.nav-links{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-item{
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 10px;
+  transition: 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+  background: rgba(255,255,255,0.18);
+  transform: translateX(6px);
+}
+
+.sidebar-bottom{
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 18px;
+}
+
+.logout-btn{
+  width: 100%;
+  background: #ef4444;
+  border: none;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-btn:hover{
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.logout-btn {
+  background: #ef4444;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.header-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: rgba(20, 83, 45, 0.85);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+.card h3 {
+  color: var(--text);
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+.card h4 {
+  color: var(--accent);
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.faq-question {
+  color: var(--accent);
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.faq-answer {
+  margin-bottom: 16px;
+}
+
+.support-intro {
+  margin-bottom: 20px;
+}
+
+.support-block {
+  background: rgba(251, 191, 36, 0.1);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.support-block-last {
+  margin-bottom: 20px;
+}
+
+.support-title {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  body {
+    padding: 16px;
+  }
+}

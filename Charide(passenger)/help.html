@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="help.css" />
+  <link rel="stylesheet" href="sidebar.css" />
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+<body>
+
+  <!-- Redirect to login if not authenticated -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('login.html');
+    });
+  </script>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <div class="logo-circle"><img src="logo.png" alt="Charide Logo"></div>
+        <span class="brand-text">Charide</span>
+      </div>
+      <button class="collapse-btn" id="collapseBtn" aria-label="Toggle sidebar">‹</button>
+    </div>
+
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+
+      <a href="inbox.html" class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">Messages</span>
+      </a>
+
+      <a href="ride-history.html" class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Rides History</span>
+      </a>
+
+      <a href="help.html" class="nav-item active">
+        <span class="nav-icon">🆘</span>
+        <span class="nav-label">Support</span>
+      </a>
+
+      <a href="about.html" class="nav-item">
+        <span class="nav-icon">ℹ️</span>
+        <span class="nav-label">About Us</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="profile">
+        <div class="avatar">KR</div>
+        <div class="profile-info">
+          <div class="name">Kim Ryan</div>
+          <div class="role">Passenger</div>
+        </div>
+      </div>
+
+      <button class="logout-row" id="logoutBtn"><span class="logout-icon">🚪</span><span class="logout-text">Log Out</span></button>
+
+      <script>
+        // sign-out kept for compatibility
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut();
+          window.location.href = "login.html";
+        });
+
+        document.getElementById('collapseBtn').addEventListener('click', () => {
+          document.body.classList.toggle('sidebar-collapsed');
+          const btn = document.getElementById('collapseBtn');
+          btn.textContent = document.body.classList.contains('sidebar-collapsed') ? '›' : '‹';
+        });
+      </script>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <header>
+      <div class="header-left">
+        <img src="logo.png" alt="Charide Logo" class="header-logo">
+        <p class="welcome">Help & <strong>Support</strong></p>
+      </div>
+      <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+    </header>
+
+    <section class="grid">
+    <div class="card">
+      <h3>Frequently Asked Questions</h3>
+      
+      <h4 class="faq-question">How do I book a ride?</h4>
+      <p class="faq-answer">Click on "Book a Ride" from your dashboard, enter your pickup and destination locations, select your vehicle type, and confirm the booking.</p>
+      
+      <h4 class="faq-question">How can I track my driver?</h4>
+      <p class="faq-answer">Once your ride is confirmed, go to "Track Driver" to see your driver's real-time location and estimated arrival time.</p>
+      
+      <h4 class="faq-question">What payment methods do you accept?</h4>
+      <p class="faq-answer">We accept credit cards, debit cards, digital wallets, and cash payments. You can manage your payment method in your account settings.</p>
+      
+      <h4 class="faq-question">How do I report a safety issue?</h4>
+      <p class="faq-answer">If you experience any safety concerns, please contact our support team immediately at support@charide.com or call +639-CHARIDE.</p>
+    </div>
+
+    <div class="card">
+      <h3>Get Support</h3>
+      <p class="support-intro">Having trouble? Our support team is here to help!</p>
+      
+      <div class="support-block">
+        <h4 class="support-title">📧 Email Support</h4>
+        <p>support@charide.com</p>
+      </div>
+
+      <div class="support-block">
+        <h4 class="support-title">📞 Phone Support</h4>
+        <p>+639-CHARIDE (+63-9055-618-069)</p>
+      </div>
+
+      <div class="support-block support-block-last">
+        <h4 class="support-title">💬 Live Chat</h4>
+        <p>Available 24/7 through our mobile app</p>
+      </div>
+    </div>
+    </section>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="payment.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="track-driver.html" class="back-btn">← Back</a>
+      <h1>Payment</h1>
+    </header>
+
+    <section class="card">
+      <h2>Ride Summary</h2>
+      <div class="row">
+        <span>Pickup</span>
+        <strong id="pickupText">—</strong>
+      </div>
+      <div class="row">
+        <span>Dropoff</span>
+        <strong id="dropoffText">—</strong>
+      </div>
+      <div class="row">
+        <span>Driver</span>
+        <strong id="driverText">—</strong>
+      </div>
+      <div class="row">
+        <span>Vehicle</span>
+        <strong id="vehicleText">—</strong>
+      </div>
+      <div class="row">
+        <span>Fare</span>
+        <strong id="fareText">₱0</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Choose Payment</h2>
+      <div class="payment-options">
+        <label class="option">
+          <input type="radio" name="payment" value="Cash" checked />
+          <span>Cash</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="payment" value="GCash" />
+          <span>GCash</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="payment" value="PayMaya" />
+          <span>PayMaya</span>
+        </label>
+      </div>
+
+      <button class="pay-btn" id="payBtn">Pay Now</button>
+    </section>
+  </div>
+
+  <script src="payment.js"></script>
+</body>
+</html>

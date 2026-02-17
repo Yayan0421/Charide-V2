@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charide – Passenger Dashboard</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+
+<body>
+  <!-- Redirect to login if not authenticated -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('login.html');
+    });
+  </script>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <div class="logo-circle"><img src="logo.png" alt="Charide Logo"></div>
+        <span class="brand-text">Charide</span>
+      </div>
+      <button class="collapse-btn" id="collapseBtn" aria-label="Toggle sidebar">‹</button>
+    </div>
+
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+
+      <a href="inbox.html" class="nav-item">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">Messages</span>
+      </a>
+
+      <a href="ride-history.html" class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Rides History</span>
+      </a>
+
+      <a href="help.html" class="nav-item">
+        <span class="nav-icon">🆘</span>
+        <span class="nav-label">Support</span>
+      </a>
+
+      <a href="about.html" class="nav-item">
+        <span class="nav-icon">ℹ️</span>
+        <span class="nav-label">About Us</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="profile">
+        <div class="avatar">KR</div>
+        <div class="profile-info">
+          <div class="name">Kim Ryan</div>
+          <div class="role">Passenger</div>
+        </div>
+      </div>
+
+      <button class="logout-row" id="logoutBtn"><span class="logout-icon">🚪</span><span class="logout-text">Log Out</span></button>
+
+      <script>
+        // sign-out already used elsewhere; keep same id for compatibility
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut();
+          window.location.href = "login.html";
+        });
+
+        // sidebar collapse toggle — toggles compact view
+        document.getElementById('collapseBtn').addEventListener('click', () => {
+          document.body.classList.toggle('sidebar-collapsed');
+          const btn = document.getElementById('collapseBtn');
+          btn.textContent = document.body.classList.contains('sidebar-collapsed') ? '›' : '‹';
+        });
+      </script>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <header class="topbar">
+      <div class="brand-row">
+        <img src="logo.png" alt="Charide" class="header-logo">
+        <div class="welcome-block">
+          <p class="welcome small">Welcome back,</p>
+          <p class="welcome large"><strong id="username">Passenger</strong></p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="pill status"><span class="dot"></span> 2 drivers online</button>
+        <img src="https://via.placeholder.com/56" alt="Profile" class="header-profile-photo" onclick="window.location.href='profile.html'" title="Go to Profile">
+      </div>
+    </header>
+
+    <!-- HERO / BOOKING ROW -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="badge">2 drivers online</div>
+        <h1>Get There
+          <br><span class="highlight">Faster &amp; Safer</span>
+        </h1>
+        <p class="lead">Campus rides made simple. Book in seconds, ride in minutes. Your trusted transport within ESSU.</p>
+
+        <div class="feature-row">
+          <div class="feature"><strong>⚡</strong> 3 min pickup</div>
+          <div class="feature"><strong>✔️</strong> Verified drivers</div>
+          <div class="feature"><strong>⭐</strong> 4.9 rated</div>
+        </div>
+      </div>
+
+      <aside class="booking-card">
+        <h3>Book a Ride</h3>
+
+        <label class="input-pill">
+          <span class="dot green"></span>
+          <select id="pickup" aria-label="Pickup location">
+            <option>Pickup location</option>
+            <option>Maypangdan</option>
+            <option>Essu</option>
+            <option>Tabunan</option>
+          </select>
+        </label>
+
+        <label class="input-pill">
+          <span class="dot orange"></span>
+          <select id="dropoff" aria-label="Dropoff location">
+            <option>Where to?</option>
+            <option>Maypangdan</option>
+            <option>Essu</option>
+            <option>Tabunan</option>
+          </select>
+        </label>
+
+        <div class="vehicle-options">
+          <button class="vehicle active" data-fare="13">
+            <img src="motorcycle.svg" alt="motorcycle">
+            <strong>Motorcycle</strong>
+            <span class="fare">₱13</span>
+          </button>
+
+          <button class="vehicle" data-fare="13">
+            <img src="tricycle.svg" alt="tricycle">
+            <strong>Tricycle</strong>
+            <span class="fare">₱13</span>
+          </button>
+
+          <button class="vehicle" data-fare="13" disabled aria-disabled="true" title="Car currently unavailable">
+            <img src="car.svg" alt="car">
+            <strong>Car</strong>
+            <span class="fare">Unavailable</span>
+          </button>
+        </div>
+
+        <div class="fare-row">
+          <div>Total Fare</div>
+          <div class="fare-amount" id="fareAmount">₱13</div>
+        </div>
+
+        <button id="bookNowBtn" class="book-btn">Book Now →</button>
+      </aside>
+    </section>
+
+    <!-- SERVICES / PRICING -->
+    <section class="services">
+      <div class="section-header">
+        <span class="kicker">Our Services</span>
+        <h2>Choose Your Ride</h2>
+      </div>
+
+      <div class="service-cards">
+        <div class="service-card">
+          <img src="motorcycle.svg" alt="Motorcycle">
+          <h4>Motorcycle</h4>
+          <p class="muted">Quick solo rides</p>
+          <div class="price">₱13<span class="small">/ride</span></div>
+          <ul class="benefits"><li>Fastest option</li><li>Helmet provided</li><li>Beat the traffic</li></ul>
+        </div>
+
+        <div class="service-card featured">
+          <div class="pill-pop">Most Popular</div>
+          <img src="tricycle.svg" alt="Tricycle">
+          <h4>Tricycle</h4>
+          <p class="muted">Comfortable group rides</p>
+          <div class="price">₱13<span class="small">/ride</span></div>
+          <ul class="benefits"><li>Up to 3 passengers</li><li>Luggage space</li><li>Weather protected</li></ul>
+        </div>
+
+        <div class="service-card">
+          <img src="car.svg" alt="Car">
+          <h4>Car</h4>
+          <p class="muted">Premium comfort</p>
+          <div class="price">Unavailable</div>
+          <ul class="benefits"><li>Up to 4 passengers</li><li>Air-conditioned</li><li>Most spacious</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES / STATS -->
+    <section class="about-grid">
+      <div class="about-left">
+        <span class="kicker small">Why Charide</span>
+        <h2>Campus Transport Made Easy</h2>
+        <p class="muted">We understand campus life. Quick trips between classes, late night library sessions, or heading to the dorms - we've got you covered.</p>
+
+        <ul class="icons-list">
+          <li><strong>Verified Drivers</strong><span class="muted small">All drivers are ESSU-verified community members</span></li>
+          <li><strong>Quick Pickup</strong><span class="muted small">Average pickup time of just 3 minutes</span></li>
+          <li><strong>Student-Friendly</strong><span class="muted small">Affordable fares designed for student budgets</span></li>
+          <li><strong>24/7 Support</strong><span class="muted small">Help available whenever you need it</span></li>
+        </ul>
+      </div>
+
+      <div class="stats-card">
+        <div class="stat"> <div class="stat-num">500+</div> <div class="stat-label">Daily Rides</div> </div>
+        <div class="stat"> <div class="stat-num">50+</div> <div class="stat-label">Active Drivers</div> </div>
+        <div class="stat"> <div class="stat-num highlight">4.9</div> <div class="stat-label">User Rating</div> </div>
+        <div class="stat"> <div class="stat-num accent">3min</div> <div class="stat-label">Avg. Pickup</div> </div>
+      </div>
+    </section>
+
+    <!-- NEED HELP -->
+    <section class="help">
+      <h3>Need Help?</h3>
+      <p class="muted">Our support team is here for you</p>
+
+      <div class="help-cards">
+        <div class="help-card">
+          <div class="icon">📞</div>
+          <h4>Call</h4>
+          <p class="muted">+63 912 345 6789</p>
+        </div>
+        <div class="help-card">
+          <div class="icon">✉️</div>
+          <h4>Email</h4>
+          <p class="muted">support@charide.ph</p>
+        </div>
+        <div class="help-card">
+          <div class="icon">⏰</div>
+          <h4>Hours</h4>
+          <p class="muted">6AM - 10PM Daily</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <img src="logo.png" alt="Charide" class="footer-logo">
+        <div>© 2026 Charide. ESSU Campus Transport.</div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

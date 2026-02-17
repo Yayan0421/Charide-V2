@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Charide | Rides History</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* minimal styles copied from booking for consistency */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter', sans-serif}
+body{background:#f4f4f4;color:#1f2937}
+.app{display:flex;min-height:100vh;margin-left:280px}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:280px;background:linear-gradient(180deg,#0aa812 0%,#078c0f 100%);color:#fff;display:flex;flex-direction:column;padding:0;box-shadow:4px 0 12px rgba(10,168,18,0.2);overflow-y:auto}
+.sidebar-header{padding:30px 20px;display:flex;align-items:center;gap:12px;border-bottom:2px solid rgba(255,255,255,0.1)}
+.sidebar-logo{width:48px;height:48px;object-fit:contain;border-radius:50%;background:white;padding:4px}
+.sidebar-title{font-size:24px;font-weight:700;color:#ffffff}
+.sidebar-links{flex:1;padding:20px 0;display:flex;flex-direction:column}
+.sidebar-links a{display:flex;align-items:center;gap:12px;padding:15px 20px;color:rgba(255,255,255,0.9);text-decoration:none;cursor:pointer;font-size:15px;font-weight:500;border-left:4px solid transparent}
+.sidebar-links a:hover,.sidebar-links a.active{background:rgba(255,255,255,0.1);color:#ffffff;border-left-color:#ffc107}
+.profile-info{display:flex;flex-direction:column}
+.content{flex:1;padding:24px 28px}
+.page-header{background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:18px 22px;margin-bottom:16px}
+.card{background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.ride-card{margin-bottom:12px;padding:12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff}
+</style>
+</head>
+<body>
+<div class="app" id="appShell">
+	<aside class="sidebar">
+		<div class="sidebar-header">
+			<img src="logo.png" alt="Charide" class="sidebar-logo">
+			<span class="sidebar-title">Charide</span>
+		</div>
+		<nav class="sidebar-links">
+			<a href="dashboard-driver.html">🏠 <span class="link-text">Dashboard</span></a>
+			<a href="message-1.html">💬 <span class="link-text">Messages</span></a>
+			<a href="booking.html">🗓️ <span class="link-text">Bookings</span></a>
+			<a href="rides-history.html" class="active">📜 <span class="link-text">Rides History</span></a>
+			<a href="support-devices.html">🆘 <span class="link-text">Support</span></a>
+			<a href="about-us-1.html">ℹ️ <span class="link-text">About Us</span></a>
+			<a href="profile.html">👤 <span class="link-text">Profile</span></a>
+		</nav>
+		<div style="padding:20px;border-top:2px solid rgba(255,255,255,0.1);">
+			<button onclick="logout()" style="background:transparent;border:none;color:#fff;cursor:pointer">🚪 Log Out</button>
+		</div>
+	</aside>
+	<main class="content">
+		<div class="page-header">
+			<h1>Rides History</h1>
+			<p>Your completed rides</p>
+		</div>
+		<div class="card">
+			<div id="historyList"></div>
+		</div>
+	</main>
+</div>
+
+<script>
+const API_BASE_URL = window.API_BASE_URL || window.location.origin;
+async function apiRequest(path, options = {}){
+  const url = API_BASE_URL.replace(/\/+$/, '') + path;
+  const headers = Object.assign({'Content-Type':'application/json'}, options.headers || {});
+  const token = localStorage.getItem('charide_token');
+  if (token) headers.Authorization = 'Bearer ' + token;
+  const resp = await fetch(url, { method: options.method || 'GET', headers, body: options.body?JSON.stringify(options.body):undefined });
+  const text = await resp.text();
+  let data = null;
+  const ct = resp.headers.get('content-type')||'';
+  if (text){ if (ct.includes('application/json')) data = JSON.parse(text); else data = text; }
+  if (!resp.ok){ throw new Error((data && (data.error||data.message)) || ('Request failed ('+resp.status+')')); }
+  if (Array.isArray(data) && path.toLowerCase().includes('/driver/rides')) data = { rides: data };
+  return data;
+}
+
+function logout(){ localStorage.removeItem('charide_token'); localStorage.removeItem('charide_refresh_token'); localStorage.removeItem('charide_user'); window.location.href='login.html'; }
+
+async function loadHistory(){
+  try{
+    const data = await apiRequest('/driver/rides?status=completed');
+    const rides = data.rides || [];
+    const container = document.getElementById('historyList');
+    if (!container) return;
+    container.innerHTML = '';
+    if (rides.length === 0){ container.innerHTML = '<div style="color:#6b7280">No completed rides yet.</div>'; return; }
+    rides.forEach(r => {
+      const el = document.createElement('div');
+      el.className = 'ride-card';
+      const passenger = r.passenger_name || 'Passenger';
+      const route = (r.pickup_location||'') + ' → ' + (r.dropoff_location||'');
+      const fare = r.fare ? '₱' + Number(r.fare).toFixed(2) : '—';
+      const date = r.created_at ? new Date(r.created_at).toLocaleString() : '';
+      el.innerHTML = `<div style="font-weight:700;margin-bottom:6px">${passenger}</div>
+        <div style="font-size:13px;color:#6b7280;margin-bottom:6px">${route}</div>
+        <div style="font-size:12px;color:#9ca3af">Fare: ${fare} • ${date}</div>`;
+      container.appendChild(el);
+    });
+  }catch(err){ console.error('Failed to load history', err); document.getElementById('historyList').innerHTML = '<div style="color:#b91c1c">Failed to load rides.</div>'; }
+}
+
+window.addEventListener('DOMContentLoaded', async ()=>{
+  // quick auth guard
+  const token = localStorage.getItem('charide_token');
+  if (!token){ window.location.href='login.html'; return; }
+  await loadHistory();
+});
+</script>
+
+</body>
+</html>

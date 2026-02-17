@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Rides</title>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <script src="./config.js"></script>
+  <script src="./api-config.js"></script>
+  <style>
+    .page { padding:24px; }
+    .nav { display:flex; gap:12px; align-items:center; margin-bottom:16px; }
+    .btn-back { padding:8px 12px; border-radius:8px; background:#0b1220; color:#fff; text-decoration:none; }
+    table.data-table { width:100%; border-collapse:collapse; }
+    table.data-table th, table.data-table td { padding:10px; border-bottom:1px solid rgba(0,0,0,0.06); text-align:left; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="nav">
+      <a class="btn-back" href="admin-dashboard.html">← Dashboard</a>
+      <h2>Rides</h2>
+    </div>
+
+    <div class="card">
+      <table class="data-table" id="ridesTable">
+        <thead>
+          <tr><th>ID</th><th>Passenger</th><th>Driver</th><th>From</th><th>To</th><th>Fare</th><th>Status</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    (async function(){
+      await authGuard('./login.html');
+      const tbody = document.querySelector('#ridesTable tbody');
+      tbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+      try {
+        const res = await apiRequest('/admin/rides');
+        const items = res.rides || [];
+        if (!items.length) {
+          tbody.innerHTML = '<tr><td colspan="7">No rides found</td></tr>';
+          return;
+        }
+        tbody.innerHTML = '';
+        items.forEach(r => {
+          const tr = document.createElement('tr');
+          const passenger = r.passenger_name || r.passenger_id || '—';
+          const driver = r.driver_id || '—';
+          tr.innerHTML = `
+            <td>${r.id}</td>
+            <td>${passenger}</td>
+            <td>${driver}</td>
+            <td>${r.pickup_location || '—'}</td>
+            <td>${r.dropoff_location || '—'}</td>
+            <td>₱${r.fare || '0.00'}</td>
+            <td>${r.status || '—'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7">Error: ${err.message || err}</td></tr>`;
+        console.error('load rides error', err);
+      }
+    })();
+  </script>
+</body>
+</html>

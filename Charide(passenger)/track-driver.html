@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Driver</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+
+  <style>
+    :root {
+      --bg: #16a34a;
+      --card: #15803d;
+      --text: #fef3c7;
+      --muted: #fcd34d;
+      --accent: #fbbf24;
+      --success: #dcfce7;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f5c2e 0%, #0a3d1f 100%);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .title {
+      margin-bottom: 24px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    /* Container for map + details */
+    .container {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    /* Left side container for back button + map */
+    .map-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 2;
+      min-width: 400px;
+    }
+
+    /* Back button */
+    .back-btn {
+      align-self: flex-start;
+      padding: 10px 16px;
+      background: var(--accent);
+      color: #0a3d1f;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      opacity: 0.8;
+      transform: translateX(-4px);
+    }
+
+    /* Map container */
+    .map-container {
+      height: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid rgba(251,191,36,0.2);
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Driver details card */
+    .details-card {
+      flex: 1;
+      background: rgba(20, 83, 45, 0.85);
+      padding: 24px;
+      border-radius: 14px;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid rgba(251,191,36,0.1);
+    }
+
+    .details-card h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    .section-title {
+      margin: 16px 0 10px;
+      font-size: 14px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+
+    .drivers-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .driver-card {
+      background: rgba(10, 61, 31, 0.55);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .driver-card h4 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .driver-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .driver-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .select-btn,
+    .call-btn {
+      flex: 1;
+      padding: 10px 12px;
+      background: var(--accent);
+      color: #0a3d1f;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .select-btn:hover,
+    .call-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .empty-state {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 0;
+    }
+
+    .row {
+      margin-bottom: 14px;
+    }
+
+    .row span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .row strong {
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 16px;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+
+      .map-wrapper {
+        min-width: 100%;
+      }
+
+      .map-container {
+        height: 300px;
+      }
+
+      .details-card {
+        width: 100%;
+      }
+
+      .back-btn {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('login.html');
+    });
+  </script>
+
+  <h1 class="title">Track Driver</h1>
+
+  <div class="container">
+
+    <!-- Left side: Back button + Map -->
+    <div class="map-wrapper">
+      <button class="back-btn" onclick="history.back()">← Back</button>
+
+      <div class="map-container">
+        <iframe
+          src="https://maps.google.com/maps?q=11.600000,125.433333&z=14&output=embed"
+          allowfullscreen
+          loading="lazy"
+          title="Map showing driver location">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Driver Details -->
+    <div class="details-card">
+      <h2>Choose a Driver</h2>
+
+      <div class="section-title">Active Drivers</div>
+      <div class="drivers-grid" id="activeDrivers"></div>
+
+      <div class="section-title">Nearby Drivers</div>
+      <div class="drivers-grid" id="nearbyDrivers"></div>
+    </div>
+
+  </div>
+
+  <script src="track-driver.js"></script>
+
+</body>
+</html>

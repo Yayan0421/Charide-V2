@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inbox – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="inbox.css" />
+  <link rel="stylesheet" href="sidebar.css" />
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+<body>
+  <!-- Redirect to login if not authenticated -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('login.html');
+    });
+  </script>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <div class="logo-circle"><img src="logo.png" alt="Charide Logo"></div>
+        <span class="brand-text">Charide</span>
+      </div>
+      <button class="collapse-btn" id="collapseBtn" aria-label="Toggle sidebar">‹</button>
+    </div>
+
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+
+      <a href="inbox.html" class="nav-item active">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">Messages</span>
+      </a>
+
+      <a href="ride-history.html" class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Rides History</span>
+      </a>
+
+      <a href="help.html" class="nav-item">
+        <span class="nav-icon">🆘</span>
+        <span class="nav-label">Support</span>
+      </a>
+
+      <a href="about.html" class="nav-item">
+        <span class="nav-icon">ℹ️</span>
+        <span class="nav-label">About Us</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="profile">
+        <div class="avatar">KR</div>
+        <div class="profile-info">
+          <div class="name">Kim Ryan</div>
+          <div class="role">Passenger</div>
+        </div>
+      </div>
+
+      <button class="logout-row" id="logoutBtn"><span class="logout-icon">🚪</span><span class="logout-text">Log Out</span></button>
+
+      <script>
+        // sign-out kept for compatibility
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut();
+          window.location.href = "login.html";
+        });
+
+        document.getElementById('collapseBtn').addEventListener('click', () => {
+          document.body.classList.toggle('sidebar-collapsed');
+          const btn = document.getElementById('collapseBtn');
+          btn.textContent = document.body.classList.contains('sidebar-collapsed') ? '›' : '‹';
+        });
+      </script>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+  <header>
+    <div class="header-left">
+      <img src="logo.png" alt="Charide Logo" class="header-logo">
+      <p class="welcome">Messages & <strong>Communication</strong></p>
+    </div>
+    <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+  </header>
+
+  <section class="inbox-section">
+    <div class="inbox-container">
+      <!-- Chat Window -->
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="driver-avatar">🏍️</div>
+          <div class="driver-info">
+            <div class="driver-name" id="chatTitle">Select a conversation</div>
+            <div class="driver-details" id="chatSubtitle">Choose a ride to start chatting</div>
+          </div>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="message-input-container">
+          <input type="text" class="message-input" id="messageInput" placeholder="Type your message...">
+          <button class="send-btn" id="sendBtn">Send</button>
+        </div>
+      </div>
+
+      <!-- Conversations List -->
+      <div class="conversations-list" id="conversationsList">
+        <div class="conversations-header">Active Conversations</div>
+        <div id="conversationsBody"></div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="inbox.js"></script>
+
+</body>
+</html>
+

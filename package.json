@@ -1,0 +1,19 @@
+{
+  "name": "charide-v2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:admin": "npm --prefix admin/server start",
+    "start:driver": "npm --prefix \"ChaRide(driver)/server\" start",
+    "start:passenger": "npm --prefix \"Charide(passenger)/server\" start",
+    "start:all": "concurrently \"npm run start:admin\" \"npm run start:driver\" \"npm run start:passenger\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

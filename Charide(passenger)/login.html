@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="login.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand">
+    <h1>Welcome Back</h1>
+    <p>Fast & safe rides anytime</p>
+  </div>
+
+  <input id="loginEmail" type="email" placeholder="Email" />
+  <div class="password-row">
+    <input id="loginPassword" type="password" placeholder="Password" class="password-input" />
+    <button type="button" class="password-toggle" id="togglePassword">👁️</button>
+  </div>
+
+  <button id="loginBtn" disabled>Login</button>
+
+  <!-- Forgot Password -->
+  <p class="forgot-password">
+    <a href="forgot-password.html">Forgot password?</a>
+  </p>
+
+  <!-- Social Login Buttons -->
+  <div class="social-login">
+    <button class="social-btn google">Continue with Google</button>
+    <button class="social-btn facebook">Continue with Facebook</button>
+  </div>
+
+  <div class="link">
+    Don’t have an account?
+    <a href="signup.html">Sign up</a>
+  </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

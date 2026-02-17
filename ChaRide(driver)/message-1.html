@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Charide | Messages</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green-700: #078c0f;
+      --green-600: #0aa812;
+      --green-500: #22c55e;
+      --bg: #f4f4f4;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+      background: var(--bg);
+      margin-left: 280px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background: linear-gradient(180deg, var(--green-600) 0%, var(--green-700) 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      box-shadow: 4px 0 12px rgba(10, 168, 18, 0.2);
+      overflow-y: auto;
+      transition: width 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 30px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 6px;
+    }
+
+    .sidebar-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .sidebar-toggle {
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.18);
+      border: none;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .sidebar-links {
+      flex: 1;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-links a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 20px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar-links a .link-text {
+      flex: 1;
+    }
+
+    .sidebar-links a:hover,
+    .sidebar-links a.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-left-color: #ffc107;
+    }
+
+    .sidebar-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .profile-info strong {
+      font-size: 14px;
+      color: #ffffff;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .profile-info small {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 2px 0 0 0;
+    }
+
+    .sidebar-logout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 20px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      border-left: 4px solid transparent;
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
+      margin-top: auto;
+    }
+
+    .sidebar-logout:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-left-color: #ff6b6b;
+    }
+
+    .content {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .search {
+      padding: 12px 20px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      outline: none;
+    }
+
+    .conversation-list {
+      padding: 8px 12px 16px;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      overflow: auto;
+    }
+
+    .conversation-list .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #9ca3af;
+    }
+
+    .conversation-item {
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.2s ease, border 0.2s ease;
+      background: #ffffff;
+    }
+
+    .conversation-item:hover {
+      border-color: #d1d5db;
+      background: #f9fafb;
+    }
+
+    .conversation-item.active {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+    }
+
+    .conversation-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .conversation-preview,
+    .conversation-time {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      text-align: center;
+      gap: 12px;
+      padding: 30px;
+    }
+
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .chat-header {
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-header .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #111827;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-title {
+      font-weight: 700;
+    }
+
+    .chat-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .messages {
+      flex: 1;
+      padding: 18px 20px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8fafc;
+    }
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      max-width: 70%;
+      gap: 4px;
+    }
+
+    .message.sent {
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .message.received {
+      align-self: flex-start;
+    }
+
+    .message-bubble {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .message.sent .message-bubble {
+      background: #dcfce7;
+      border-color: #bbf7d0;
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .message-input {
+      padding: 12px 20px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      background: #ffffff;
+    }
+
+    .message-input input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      outline: none;
+    }
+
+    .message-input button {
+      width: auto;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: var(--green-600);
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .message-input button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .empty-chat {
+      margin: auto;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .empty-state .icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: #9ca3af;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .empty-state p {
+      font-size: 13px;
+    }
+
+    @media (max-width: 1000px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .sidebar {
+        width: 90px;
+      }
+
+      .sidebar-title,
+      .profile-info,
+      .sidebar-links a .link-text {
+        display: none;
+      }
+
+      .sidebar-header {
+        justify-content: center;
+      }
+    }
+
+    .app.is-collapsed .sidebar {
+      width: 90px;
+    }
+
+    .app.is-collapsed .sidebar-title,
+    .app.is-collapsed .profile-info,
+    .app.is-collapsed .sidebar-links a .link-text {
+      display: none;
+    }
+
+    .app.is-collapsed .sidebar-header {
+      justify-content: center;
+    }
+
+    .app.is-collapsed .sidebar-toggle {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app" id="appShell">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo.png" alt="Charide" class="sidebar-logo">
+        <span class="sidebar-title">Charide</span>
+        <button class="sidebar-toggle" id="sidebarCollapse" aria-label="Collapse sidebar">‹</button>
+      </div>
+
+      <nav class="sidebar-links">
+        <a href="dashboard-driver.html">🏠 <span class="link-text">Dashboard</span></a>
+        <a href="message-1.html" class="active">💬 <span class="link-text">Messages</span></a>
+        <a href="booking.html">🗓️ <span class="link-text">Bookings</span></a>
+        <a href="support-devices.html">🆘 <span class="link-text">Support</span></a>
+        <a href="about-us-1.html">ℹ️ <span class="link-text">About Us</span></a>
+        <a href="profile.html">👤 <span class="link-text">Profile</span></a>
+      </nav>
+
+      <div class="sidebar-profile">
+        <div class="avatar" id="sidebarAvatar">KR</div>
+        <div class="profile-info">
+          <strong id="sidebarName">Kim Ryan</strong>
+          <small>Driver</small>
+        </div>
+      </div>
+
+      <a href="#" class="sidebar-logout" onclick="logout(); return false;">🚪 Log Out</a>
+    </aside>
+
+    <main class="content">
+      <section class="panel">
+        <div class="panel-header">Messages</div>
+        <div class="search">
+          <input type="text" placeholder="Search conversations...">
+        </div>
+        <div class="conversation-list" id="conversationList">
+          <div class="empty-state" id="conversationEmpty">
+            <div class="icon">💬</div>
+            <div>No conversations yet</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel chat-panel">
+        <div class="chat-header">
+          <div class="avatar" id="chatAvatar">💭</div>
+          <div>
+            <div class="chat-title" id="chatTitle">Select a conversation</div>
+            <div class="chat-subtitle" id="chatSubtitle">Choose from your ride history to start messaging</div>
+          </div>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="message-input">
+          <input type="text" id="messageInput" placeholder="Type your message..." disabled>
+          <button id="sendBtn" disabled>Send</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="message-1.js"></script>
+</body>
+</html>

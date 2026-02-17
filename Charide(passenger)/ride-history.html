@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ride History – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="ride-history.css" />
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+<body>
+  <!-- Redirect to login if not authenticated -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('login.html');
+    });
+  </script>
+
+  <header>
+    <div class="header-left">
+      <button class="back-btn" onclick="window.history.back()">← Back</button>
+      <h1>Completed Rides</h1>
+    </div>
+    <div class="header-right">
+
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+      <script>
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut();
+          window.location.href = "login.html";
+        });
+      </script>
+    </div>
+  </header>
+
+  <section class="filters">
+    <input type="text" id="searchInput" placeholder="Search by route..." class="search-input">
+    <select id="filterStatus" class="filter-select" aria-label="Filter rides by status">
+      <option value="">All Statuses</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </section>
+
+  <section class="rides-container">
+    <div id="ridesList" class="rides-list"></div>
+  </section>
+
+  <script src="ride-history.js"></script>
+
+</body>
+</html>

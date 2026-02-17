@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charide - Campus Ride Service</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <header class="header">
+        <a href="#home" class="logo">
+            <img src="logo.png" alt="Charide" class="logo-img">
+            <span>Charide</span>
+        </a>
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div class="header-right">
+            <a href="login.html" class="driver-portal">🚗 Driver Portal</a>
+        </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <div class="page-content">
+   
+            <section class="home" id="home">
+                <div class="home-content">
+                    <h2>
+                        Safe, Fast & Reliable <br> Motorcycle Rides
+                    </h2>
+                    <h3>
+                        Your Everyday Ride Partner
+                    </h3>
+                    <p>
+                        Charide is a motorcycle ride-hailing service designed to get you 
+                        to your destination quickly and safely. 
+                        Avoid traffic, save time, and enjoy affordable rides with trained riders.
+                        Book anytime, anywhere!
+                    </p>
+                   <div class="btn-box">
+                        <a href="signup (1).html" class="btn-primary">Sign Up</a>
+                        <a href="login.html" class="btn-outline">Log In</a>
+                    </div>
+                </div>
+
+                <div class="pic">
+                    <div class="img1"><img src="angkas1.jpg" alt="Angkas Ride"></div>
+                    <div class="img2"><img src="angkas2.jpg" alt="Motorcycle Taxi"></div>
+                    <div class="pico">
+                        <div class="img3"><img src="angkas3.jpg" alt="Angkas App"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATS SECTION -->
+            <section class="stats-section">
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <h3>500+</h3>
+                        <p>Daily Rides</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>50+</h3>
+                        <p>Active Drivers</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>4.9</h3>
+                        <p>User Rating</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>24/7</h3>
+                        <p>Service Hours</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT SECTION -->
+            <section class="about-section" id="about">
+                <h2 class="section-heading">About <span>Charide</span></h2>
+                
+                <div class="about-container">
+                    <div class="about-image">
+                        <img src="angkas3.jpg" alt="Charide Character">
+                    </div>
+                    <div class="about-features">
+                        <p class="about-text">Charide is ESSU's premier campus transport solution, connecting students and staff with reliable drivers for safe, affordable rides.</p>
+                        
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <div>
+                                    <h4>Verified Drivers</h4>
+                                    <p>All drivers are verified ESSU community members with proper documentation.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <div>
+                                    <h4>Quick Pickup</h4>
+                                    <p>Average pickup time of just 3 minutes within campus grounds.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <div>
+                                    <h4>Affordable Rates</h4>
+                                    <p>Student-friendly pricing starting at just ₱15 per ride.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SERVICES SECTION -->
+            <section class="services-section" id="services">
+                <h2 class="section-heading">Our <span>Services</span></h2>
+                <p class="services-subtitle">Choose the ride that fits your needs</p>
+
+                <div class="services-container">
+                    <div class="service-card">
+                        <div class="service-icon">🏍️</div>
+                        <h3>Motorcycle Ride</h3>
+                        <p>Fast and efficient single-passenger transport for quick trips around campus.</p>
+                        <p class="service-price">Starting ₱15</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">🛺</div>
+                        <h3>Tricycle Ride</h3>
+                        <p>Comfortable rides for up to 3 passengers with luggage space.</p>
+                        <p class="service-price">Starting ₱25</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">📅</div>
+                        <h3>Scheduled Pickup</h3>
+                        <p>Pre-book your ride for class schedules or important appointments.</p>
+                        <p class="service-price">Same rate</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DRIVER SIGNUP SECTION -->
+            <section class="driver-section">
+                <h2>Become a Charide Driver</h2>
+                <p>Earn money by providing rides to fellow ESSU students and staff</p>
+                <a href="signup (1).html" class="btn-driver">Register as Driver</a>
+            </section>
+
+            <!-- CONTACT SECTION -->
+            <section class="contact-section" id="contact">
+                <div class="contact-banner">
+                    <h2>Contact <span>Us</span></h2>
+                    <p>Have questions? We're here to help</p>
+                </div>
+
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div>
+                                <h3>Location</h3>
+                                <p>ESSU Main Campus, Borongan City</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">📞</div>
+                            <div>
+                                <h3>Phone</h3>
+                                <p>+63 912 345 6789</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">📧</div>
+                            <div>
+                                <h3>Email</h3>
+                                <p>support@charide.ph</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="contactName" placeholder="Your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="contactEmail" placeholder="you@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea id="contactMessage" placeholder="How can we help?" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">Send Message</button>
+                    </form>
+                </div>
+            </section>
+
+            <footer>
+                <p>&copy; 2024 Charide. All rights reserved. ESSU Campus Transport</p>
+            </footer>
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

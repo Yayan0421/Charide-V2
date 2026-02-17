@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver Sign Up</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(-45deg, #2e7d32, #66bb6a, #a5d6a7, #ffffff);
+    background-size:400% 400%;
+    animation:gradientBG 8s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.signup-box{
+    width:480px;
+    max-width:95%;
+    padding:40px 30px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.25);
+    backdrop-filter:blur(18px);
+    box-shadow:0 25px 45px rgba(0,0,0,0.25);
+    text-align:center;
+    animation:slide 0.8s ease;
+}
+
+@keyframes slide{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.logo img{
+    width:120px;
+    height:auto;
+    margin-bottom:15px;
+}
+
+.signup-box h2{
+    margin:0 0 8px;
+    color:#0e4f3a;
+    font-size:24px;
+    font-weight:600;
+}
+
+.signup-box p{
+    margin-bottom:20px;
+    font-size:14px;
+    color:#1f6f54;
+}
+
+.field-label{
+    display:block;
+    text-align:left;
+    font-size:13px;
+    color:#0e4f3a;
+    margin:4px 0 6px;
+}
+
+input, select{
+    width:100%;
+    padding:12px 16px;
+    margin-bottom:12px;
+    border-radius:14px;
+    border:none;
+    outline:none;
+    font-size:14px;
+    background:rgba(255,255,255,0.95);
+}
+
+textarea{
+    width:100%;
+    padding:12px 16px;
+    border-radius:14px;
+    border:none;
+    outline:none;
+    font-size:14px;
+    background:rgba(255,255,255,0.95);
+    margin-bottom:12px;
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:5px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#0f9b6c,#057a55);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 30px rgba(0,0,0,0.25);
+}
+
+.login-link{
+    margin-top:18px;
+    font-size:14px;
+    color:#0e4f3a;
+}
+
+.login-link a{
+    color:#057a55;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.login-link a:hover{
+    text-decoration:underline;
+}
+
+.profile-pic-preview{
+    width:100px;
+    height:100px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    border:2px solid #057a55;
+}
+.btn-signup{
+  display:inline-block;
+  padding:15px 35px;
+  background-color:#fbbf24;
+  color:white;
+  font-weight:600;
+  border-radius:25px;
+  text-decoration:none;
+  box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="signup-box">
+
+    <div class="logo">
+        <img src="logo.png" alt="Logo">
+    </div>
+
+    <h2 id="formTitle">Create Account</h2>
+    <p id="formSubtitle">Sign up to join as a driver</p>
+
+    <form id="signupForm" enctype="multipart/form-data">
+
+        <!-- PROFILE PICTURE -->
+        <img id="profilePreview" class="profile-pic-preview" src="" alt="Profile Preview" style="display:none;">
+        <label class="field-label" for="profilePic">Profile Photo</label>
+        <input type="file" id="profilePic" accept="image/*" required onchange="previewProfilePic(event)">
+
+        <!-- PERSONAL INFO -->
+        <label class="field-label" for="firstName">First Name</label>
+        <input type="text" id="firstName" placeholder="First Name" required>
+        <label class="field-label" for="lastName">Last Name</label>
+        <input type="text" id="lastName" placeholder="Last Name" required>
+        <label class="field-label" for="username">Username</label>
+        <input type="text" id="username" placeholder="Username" required>
+        <label class="field-label" for="dob">Date of Birth</label>
+        <input type="date" id="dob" placeholder="Date of Birth" required>
+        <label class="field-label" for="gender">Gender</label>
+        <select id="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <label class="field-label" for="address">Address</label>
+        <input type="text" id="address" placeholder="Address" required>
+        <label class="field-label" for="mobile">Mobile Number</label>
+        <input type="text" id="mobile" placeholder="Mobile Number" required>
+
+        <!-- DRIVER LICENSE -->
+        <label class="field-label" for="licenseId">Driver License ID</label>
+        <input type="text" id="licenseId" placeholder="Driver License ID" required>
+        <label class="field-label" for="licensePic">Driver License File</label>
+        <input type="file" id="licensePic" accept="image/*,.pdf" required>
+
+        <!-- VEHICLE INFO -->
+        <label class="field-label" for="vehicleType">Vehicle Type</label>
+        <input type="text" id="vehicleType" placeholder="Vehicle Type" required>
+        <label class="field-label" for="plateNumber">Vehicle Plate Number</label>
+        <input type="text" id="plateNumber" placeholder="Vehicle Plate Number" required>
+        <label class="field-label" for="experience">Years of Driving Experience</label>
+        <input type="number" id="experience" placeholder="Years of Driving Experience" required>
+
+        <!-- EMERGENCY CONTACT -->
+        <label class="field-label" for="emergencyName">Emergency Contact Name</label>
+        <input type="text" id="emergencyName" placeholder="Emergency Contact Name" required>
+        <label class="field-label" for="emergencyNumber">Emergency Contact Number</label>
+        <input type="text" id="emergencyNumber" placeholder="Emergency Contact Number" required>
+
+            <button type="submit" class="btn-signup">SIGN UP</button>
+
+    </form>
+
+        <form id="followupForm" style="display:none;" enctype="multipart/form-data">
+            <label class="field-label" for="availability">Availability</label>
+            <select id="availability" required>
+                        <option value="">Availability</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Weekends">Weekends</option>
+                </select>
+            <label class="field-label" for="preferredZone">Preferred Zone</label>
+            <input type="text" id="preferredZone" placeholder="Preferred Zone" required>
+            <label class="field-label" for="vehicleColor">Vehicle Color</label>
+            <input type="text" id="vehicleColor" placeholder="Vehicle Color" required>
+            <label class="field-label" for="licenseExpiry">License Expiry</label>
+            <input type="date" id="licenseExpiry" placeholder="License Expiry" required>
+            <label class="field-label" for="references">References</label>
+            <textarea id="references" placeholder="References" rows="3" required></textarea>
+            <label class="field-label" for="notes">Additional Notes</label>
+            <textarea id="notes" placeholder="Additional Notes" rows="3" required></textarea>
+
+                <button type="submit" class="btn-signup">SUBMIT FOR REVIEW</button>
+        </form>
+
+        <div id="formMessage" style="margin-top:12px; font-size:13px; color:#0e4f3a; display:none;"></div>
+
+  
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const { createClient } = supabase;
+const supabaseUrl = 'https://cvfjpigbkbzjvvfzvjzr.supabase.co';
+const supabaseKey = 'sb_publishable_Wt2fAK6-5mkAX4SNyobCYQ_YPROnFM4';
+const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+    global: {
+        headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`
+        }
+    }
+});
+
+const signupForm = document.getElementById('signupForm');
+const followupForm = document.getElementById('followupForm');
+const formTitle = document.getElementById('formTitle');
+const formSubtitle = document.getElementById('formSubtitle');
+const formMessage = document.getElementById('formMessage');
+
+let signupData = null;
+
+function previewProfilePic(event){
+    const reader = new FileReader();
+    reader.onload = function(){
+        const output = document.getElementById('profilePreview');
+        output.src = reader.result;
+        output.style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    signupData = {
+        profilePic: document.getElementById('profilePic').files[0],
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        username: document.getElementById('username').value.trim(),
+        dob: document.getElementById('dob').value,
+        gender: document.getElementById('gender').value,
+        address: document.getElementById('address').value.trim(),
+        mobile: document.getElementById('mobile').value.trim(),
+        licenseId: document.getElementById('licenseId').value.trim(),
+        licensePic: document.getElementById('licensePic').files[0],
+        vehicleType: document.getElementById('vehicleType').value.trim(),
+        plateNumber: document.getElementById('plateNumber').value.trim(),
+        experience: document.getElementById('experience').value.trim(),
+        emergencyName: document.getElementById('emergencyName').value.trim(),
+        emergencyNumber: document.getElementById('emergencyNumber').value.trim()
+    };
+
+    signupForm.style.display = 'none';
+    followupForm.style.display = 'block';
+    formTitle.textContent = 'Additional Info';
+    formSubtitle.textContent = 'Provide extra details for review';
+    formMessage.style.display = 'none';
+});
+
+followupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!signupData) {
+        formMessage.textContent = 'Please complete the first step.';
+        formMessage.style.display = 'block';
+        return;
+    }
+
+    // Try to obtain the signed-up user id from localStorage or the URL query (fallback)
+    let storedUserRaw = localStorage.getItem('charide_user');
+    let storedUser = storedUserRaw ? JSON.parse(storedUserRaw) : null;
+    let userId = storedUser && (storedUser.id || storedUser.user_id) ? (storedUser.id || storedUser.user_id) : null;
+
+    if (!userId) {
+        // fallback: check URL query ?userId=...
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const qid = params.get('userId');
+            if (qid) {
+                userId = qid;
+                // persist a minimal user object so future checks pass
+                const minimal = { id: userId };
+                localStorage.setItem('charide_user', JSON.stringify(minimal));
+                storedUser = minimal;
+            }
+        } catch (e) {
+            console.warn('Failed to parse URL params', e);
+        }
+    }
+
+    if (!userId) {
+        formMessage.textContent = 'Please log in after sign up to continue.';
+        formMessage.style.display = 'block';
+        return;
+    }
+
+    const submitBtn = followupForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const profilePath = `profile/${timestamp}_${signupData.profilePic.name}`;
+        const licensePath = `license/${timestamp}_${signupData.licensePic.name}`;
+
+        const { error: profileError } = await supabaseClient.storage
+            .from('driver_info')
+            .upload(profilePath, signupData.profilePic, { upsert: true });
+
+        if (profileError) {
+            throw profileError;
+        }
+
+        const { error: licenseError } = await supabaseClient.storage
+            .from('driver_info')
+            .upload(licensePath, signupData.licensePic, { upsert: true });
+
+        if (licenseError) {
+            throw licenseError;
+        }
+
+        const followupData = {
+            availability: document.getElementById('availability').value,
+            preferred_zone: document.getElementById('preferredZone').value.trim(),
+            vehicle_color: document.getElementById('vehicleColor').value.trim(),
+            license_expiry: document.getElementById('licenseExpiry').value,
+            reference_notes: document.getElementById('references').value.trim(),
+            notes: document.getElementById('notes').value.trim()
+        };
+
+        const { error: insertError } = await supabaseClient
+            .from('drivers')
+            .insert([
+                {
+                    user_id: userId,
+                    first_name: signupData.firstName,
+                    last_name: signupData.lastName,
+                    username: signupData.username,
+                    dob: signupData.dob,
+                    gender: signupData.gender,
+                    address: signupData.address,
+                    mobile: signupData.mobile,
+                    license_id: signupData.licenseId,
+                    vehicle_type: signupData.vehicleType,
+                    vehicle_plate: signupData.plateNumber,
+                    experience: signupData.experience,
+                    emergency_name: signupData.emergencyName,
+                    emergency_number: signupData.emergencyNumber,
+                    profile_pic_path: profilePath,
+                    license_pic_path: licensePath,
+                    availability: followupData.availability,
+                    preferred_zone: followupData.preferred_zone,
+                    vehicle_color: followupData.vehicle_color,
+                    license_expiry: followupData.license_expiry,
+                    reference_notes: followupData.reference_notes,
+                    notes: followupData.notes,
+                    created_at: new Date().toISOString()
+                }
+            ]);
+
+        if (insertError) {
+            throw insertError;
+        }
+
+        formMessage.textContent = 'Submitted for review. Redirecting to login...';
+        formMessage.style.display = 'block';
+        followupForm.reset();
+        signupData = null;
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1500);
+    } catch (error) {
+        formMessage.textContent = `Submission failed: ${error.message}`;
+        formMessage.style.display = 'block';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'SUBMIT FOR REVIEW';
+    }
+});
+</script>
+
+</body>
+</html>

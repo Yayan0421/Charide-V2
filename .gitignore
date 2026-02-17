@@ -1,0 +1,24 @@
+node_modules/
+npm-debug.log
+package-lock.json
+.env
+.env.*
+.DS_Store
+.vscode/
+logs/
+*.log
+coverage/
+build/
+dist/
+
+# OS
+Thumbs.db
+desktop.ini
+
+# IDE
+*.sublime-workspace
+.idea/
+
+# Misc
+*.sqlite
+.env.local

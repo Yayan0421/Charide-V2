@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passenger Profile – Charide</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="profile.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="config.js"></script>
+  <script src="api-config.js"></script>
+</head>
+<body>
+  <!-- Redirect to login if not authenticated -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('login.html');
+    });
+  </script>
+
+  <header>
+    <div class="header-left">
+      <button class="back-btn" onclick="window.history.back()">← Back</button>
+      <h1>Passenger Profile</h1>
+    </div>
+    <div class="header-right">
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+      <script>
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut();
+          window.location.href = "login.html";
+        });
+      </script>
+    </div>
+  </header>
+
+  <section class="profile-container">
+    <div class="profile-header">
+      <div class="profile-pic">
+        <div class="profile-initials">JD</div>
+      </div>
+      <div class="profile-info-header">
+        <h2 id="passengerName">Loading...</h2>
+        <p id="passengerEmail">email@example.com</p>
+      </div>
+    </div>
+
+    <div class="profile-content">
+      <div class="section">
+        <h3>Personal Information</h3>
+        <div class="info-group">
+          <label>Full Name:</label>
+          <p id="fullName">—</p>
+        </div>
+        <div class="info-group">
+          <label>Email:</label>
+          <p id="email">—</p>
+        </div>
+        <div class="info-group">
+          <label>Phone Number:</label>
+          <p id="phone">—</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Account Information</h3>
+        <div class="info-group">
+          <label>Member Since:</label>
+          <p id="memberSince">—</p>
+        </div>
+        <div class="info-group">
+          <label>Account Status:</label>
+          <p id="accountStatus">—</p>
+        </div>
+        <div class="info-group">
+          <label>Verification Status:</label>
+          <p id="verificationStatus">—</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Preferences</h3>
+        <div class="info-group">
+          <label>Preferred Payment Method:</label>
+          <p id="paymentMethod">—</p>
+        </div>
+        <div class="info-group">
+          <label>Notifications Enabled:</label>
+          <p id="notifications">—</p>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+        <button class="btn btn-secondary" onclick="deleteAccount()">Delete Account</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="profile.js"></script>
+
+</body>
+</html>

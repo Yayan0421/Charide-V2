@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin — Drivers</title>
+  <link rel="stylesheet" href="admin-dashboard.css">
+  <script src="./config.js"></script>
+  <script src="./api-config.js"></script>
+  <style>
+    .page { padding:24px; }
+    .nav { display:flex; gap:12px; align-items:center; margin-bottom:16px; }
+    .btn-back { padding:8px 12px; border-radius:8px; background:#0b1220; color:#fff; text-decoration:none; }
+    table.data-table { width:100%; border-collapse:collapse; }
+    table.data-table th, table.data-table td { padding:10px; border-bottom:1px solid rgba(0,0,0,0.06); text-align:left; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="nav">
+      <a class="btn-back" href="admin-dashboard.html">← Dashboard</a>
+      <h2>Drivers</h2>
+    </div>
+
+    <div class="card">
+      <table class="data-table" id="driversTable">
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Vehicle</th><th>Plate</th><th>Online</th><th>Rides Completed</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    (async function(){
+      await authGuard('./login.html');
+      const tbody = document.querySelector('#driversTable tbody');
+      tbody.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+      try {
+        const res = await apiRequest('/admin/drivers');
+        const items = res.drivers || [];
+        if (!items.length) {
+          tbody.innerHTML = '<tr><td colspan="6">No drivers found</td></tr>';
+          return;
+        }
+        tbody.innerHTML = '';
+        items.forEach(d => {
+          const tr = document.createElement('tr');
+          const name = d.user && d.user.full_name ? d.user.full_name : '—';
+          const vehicle = d.vehicle_type || '—';
+          const plate = d.vehicle_plate || '—';
+          const online = d.is_online ? 'Yes' : 'No';
+          tr.innerHTML = `
+            <td>${d.id}</td>
+            <td>${name}</td>
+            <td>${vehicle}</td>
+            <td>${plate}</td>
+            <td>${online}</td>
+            <td>${d.rides_completed || 0}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6">Error: ${err.message || err}</td></tr>`;
+        console.error('load drivers error', err);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+body{
+    background-color: #e9f8ec; /* light green */
+    color: #0b2e13;
+}
+
+/* =====================
+   NAVBAR
+===================== */
+.header{
+    width: 100%;
+    padding: 20px 10px;
+    background: #0aa812;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(10,168,18,0.35);
+}
+
+.logo{
+    font-size: 25px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 35px;
+}
+
+.navbar a{
+    font-size: 18px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 20px;
+    transition: 0.3s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+    color: #c9f5d3;
+}
+
+/* =====================
+   HOME
+===================== */
+.home{
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    margin-bottom: 20px;
+}
+
+.home-content{
+    max-width: 600px;
+}
+
+.home-content h1{
+    font-size: 56px;
+    font-weight: 700;
+    color: #0b2e13;
+}
+
+.home-content h3{
+    font-size: 32px;
+    font-weight: 700;
+    color: #0aa812;
+}
+
+.home-content p{
+    font-size: 16px;
+    margin: 20px 0 40px;    
+    color: #145c2a;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+.btn-box{
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* Shared button style */
+.btn-box a{
+    padding: 12px 38px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(10,168,18,0.25);
+}
+
+/* SIGN UP – solid */
+.btn-primary{
+    background: #0aa812;
+    color: #ffffff;
+    border: 2px solid #0aa812;
+}
+
+.btn-primary:hover{
+    background: #078c10;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(10,168,18,0.4);
+}
+
+/* LOG IN – outline */
+.btn-outline{
+    background: transparent;
+    color: #0aa812;
+    border: 2px solid #0aa812;
+}
+
+.btn-outline:hover{
+    background: #0aa812;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(10,168,18,0.4);
+}
+
+
+.btn-box a{
+    padding: 10px 35px;
+    background: #0aa812;
+    border: 2px solid #0aa812;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    transition: .5s;
+}
+
+.btn-box a:nth-child(2){
+    background: transparent;
+    border: 2px solid #0aa812;
+    color: #0aa812;
+}
+
+.btn-box a:nth-child(2):hover{
+    background: #078c10;
+    color: #ffffff;
+}
+
+.btn-box a:hover{
+    background: #078c10;
+}
+
+
+
+/* =====================
+   IMAGES
+===================== */
+.home .pic{ 
+    display: flex;
+    margin-left: 650px;
+    margin-top: -350px;
+}
+
+.pic img{
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 25%;
+    margin: 10px;
+    box-shadow: 0 4px 10px rgba(10,168,18,0.35);
+    border: 3px solid #0aa812;
+}
+
+.pico{
+    display: flex;
+}
+
+/* =====================
+   ABOUT & SECTIONS
+===================== */
+.about {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background: #f0fff4;
+    padding: 20rem 2rem;
+    text-align: center;
+}
+
+.heading {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #0aa812;
+}
+
+.pica img {
+    width: 200px;
+    border-radius: 50%;
+    border: 8px solid #0aa812;
+}
+
+.about-content p{
+    max-width: 800px;
+    margin: auto;
+    padding: 15px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #0b2e13;
+    line-height: 1.6;
+    box-shadow: 0 4px 10px rgba(10,168,18,0.2);
+}

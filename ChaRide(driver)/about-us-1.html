@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Cha Ride – ESSU Campus Transport</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+   *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Inter', sans-serif;
+    }
+
+    body{
+      background:#f4f4f4;
+      color:#1f2937;
+    }
+
+    .app{
+      display:flex;
+      min-height:100vh;
+      margin-left:280px;
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100vh;
+      width:280px;
+      background:linear-gradient(180deg, #0aa812 0%, #078c0f 100%);
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      padding:0;
+      box-shadow:4px 0 12px rgba(10, 168, 18, 0.2);
+      overflow-y:auto;
+      transition:width 0.3s ease;
+    }
+
+    .sidebar-header{
+      padding:30px 20px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border-bottom:2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-logo{
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      border-radius:50%;
+      background:white;
+      padding:4px;
+    }
+
+    .sidebar-title{
+      font-size:24px;
+      font-weight:700;
+      color:#ffffff;
+      white-space:nowrap;
+    }
+
+    .sidebar-toggle{
+      margin-left:auto;
+      background:rgba(255, 255, 255, 0.18);
+      border:none;
+      color:#fff;
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform 0.3s ease, background 0.3s ease;
+    }
+
+    .sidebar-links{
+      flex:1;
+      padding:20px 0;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .sidebar-links a{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:15px 20px;
+      color:rgba(255, 255, 255, 0.9);
+      text-decoration:none;
+      transition:all 0.3s ease;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:500;
+      border-left:4px solid transparent;
+    }
+
+    .sidebar-links a .link-text{
+      flex:1;
+    }
+
+    .sidebar-links a:hover,
+    .sidebar-links a.active{
+      background:rgba(255, 255, 255, 0.1);
+      color:#ffffff;
+      border-left-color:#ffc107;
+    }
+
+    .sidebar-profile{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:20px;
+      border-bottom:2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar{
+      width:56px;
+      height:56px;
+      background:rgba(255, 255, 255, 0.2);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      color:#fff;
+      flex-shrink:0;
+      font-size:16px;
+    }
+
+    .profile-info{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .profile-info strong{
+      font-size:14px;
+      color:#ffffff;
+      margin:0;
+      font-weight:600;
+    }
+
+    .profile-info small{
+      font-size:12px;
+      color:rgba(255, 255, 255, 0.8);
+      margin:2px 0 0 0;
+    }
+
+    .sidebar-logout{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:15px 20px;
+      color:rgba(255, 255, 255, 0.9);
+      text-decoration:none;
+      transition:all 0.3s ease;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:500;
+      border-left:4px solid transparent;
+      border-top:2px solid rgba(255, 255, 255, 0.1);
+      margin-top:auto;
+    }
+
+    .sidebar-logout:hover{
+      background:rgba(255, 255, 255, 0.1);
+      color:#ffffff;
+      border-left-color:#ff6b6b;
+    }
+
+    .app.is-collapsed .sidebar{
+      width:90px;
+    }
+
+    .app.is-collapsed .sidebar-title,
+    .app.is-collapsed .profile-info,
+    .app.is-collapsed .sidebar-links a .link-text{
+      display:none;
+    }
+
+    .app.is-collapsed .sidebar-header{
+      justify-content:center;
+    }
+
+    .app.is-collapsed .sidebar-toggle{
+      transform:rotate(180deg);
+    }
+
+    /* MAIN */
+    .content{
+      flex:1;
+      padding:24px 28px;
+    }
+
+    .page-header{
+      background:#0aa812;
+      color:#ffffff;
+      padding:22px;
+      border-radius:12px;
+      margin-bottom:18px;
+    }
+
+    .page-header h1{
+      margin-bottom:6px;
+      font-size:22px;
+    }
+
+    .page-header p{
+      color:#e7f7ea;
+      font-size:13px;
+    }
+
+    .container{
+      background:#ffffff;
+      padding:22px;
+      border-radius:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
+
+    h2{
+      color:#0aa812;
+      margin-bottom:10px;
+    }
+
+    ul{
+      padding-left:18px;
+    }
+
+    li{
+      margin-bottom:8px;
+    }
+
+    .footer{
+      color:#6b7280;
+      text-align:center;
+      font-size:12px;
+      margin-top:20px;
+    }
+
+    @media (max-width: 820px){
+      .sidebar{
+        width:90px;
+      }
+
+      .sidebar-title,
+      .profile-info,
+      .sidebar-links a .link-text{
+        display:none;
+      }
+
+      .sidebar-header{
+        justify-content:center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app" id="appShell">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.png" alt="Charide" class="sidebar-logo">
+      <span class="sidebar-title">Charide</span>
+      <button class="sidebar-toggle" id="sidebarCollapse" aria-label="Collapse sidebar">‹</button>
+    </div>
+
+    <nav class="sidebar-links">
+      <a href="dashboard-driver.html">🏠 <span class="link-text">Dashboard</span></a>
+      <a href="message-1.html">💬 <span class="link-text">Messages</span></a>
+      <a href="booking.html">🗓️ <span class="link-text">Bookings</span></a>
+      <a href="support-devices.html">🆘 <span class="link-text">Support</span></a>
+      <a href="about-us-1.html" class="active">ℹ️ <span class="link-text">About Us</span></a>
+      <a href="profile.html">👤 <span class="link-text">Profile</span></a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar" id="sidebarAvatar">KR</div>
+      <div class="profile-info">
+        <strong id="sidebarName">Kim Ryan</strong>
+        <small>Driver</small>
+      </div>
+    </div>
+
+    <a href="#" class="sidebar-logout" onclick="logout(); return false;">🚪 Log Out</a>
+  </aside>
+
+  <main class="content">
+    <header class="page-header">
+      <h1>About Cha Ride</h1>
+      <p>ESSU Campus Transport System</p>
+    </header>
+
+    <section class="container">
+
+    <section class="section">
+      <h2>Overview</h2>
+      <p>
+        Cha Ride is a campus transportation system designed to help students,
+        staff, and teachers move around the ESSU campus safely and conveniently.
+        It connects passengers with available tricycle and motorcycle drivers,
+        making campus travel faster and more organized.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Objectives</h2>
+      <ul>
+        <li>Provide safe and convenient campus transportation</li>
+        <li>Reduce waiting time for passengers</li>
+        <li>Organize and manage campus transport efficiently</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Key Features</h2>
+      <ul>
+        <li>Ride request and tracking</li>
+        <li>Driver availability monitoring</li>
+        <li>Fare and payment recording</li>
+        <li>Admin dashboard for system management</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>System Users</h2>
+      <ul>
+        <li><strong>Passengers:</strong> Students, staff, and teachers</li>
+        <li><strong>Drivers:</strong> Tricycle and motorcycle drivers</li>
+        <li><strong>Admin:</strong> Manages system operations</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Benefits</h2>
+      <ul>
+        <li>Faster and safer campus travel</li>
+        <li>Transparent and reliable fare management</li>
+        <li>Improved experience for passengers and drivers</li>
+        <li>Organized campus transportation system</li>
+      </ul>
+    </section>
+
+    </section>
+
+    <footer class="footer">
+      <p>© 2026 Cha Ride – ESSU Campus Transport</p>
+    </footer>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const { createClient } = supabase;
+const supabaseUrl = 'https://cvfjpigbkbzjvvfzvjzr.supabase.co';
+const supabaseKey = 'sb_publishable_Wt2fAK6-5mkAX4SNyobCYQ_YPROnFM4';
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+const appShell = document.getElementById('appShell');
+const sidebarCollapse = document.getElementById('sidebarCollapse');
+
+sidebarCollapse.addEventListener('click', () => {
+  appShell.classList.toggle('is-collapsed');
+});
+
+// Check authentication on page load
+async function checkAuth() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  
+  if (!user) {
+    alert('Please log in first');
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  // Display user information
+  const userEmail = user.email || 'User';
+  const userName = user.user_metadata?.full_name || userEmail.split('@')[0];
+  const userInitials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  
+  document.getElementById('sidebarName').textContent = userName;
+  document.getElementById('sidebarAvatar').textContent = userInitials || 'U';
+}
+
+// Logout function
+async function logout() {
+  await supabaseClient.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', checkAuth);
+</script>
+
+</body>
+</html>

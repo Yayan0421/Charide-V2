@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChaRide – Admin Dashboard</title>
+  <link rel="icon" href="../Charide(passenger)/logo.png" type="image/png" />
+  <link rel="stylesheet" href="admin-dashboard.css" />
+  <script src="./config.js"></script>
+  <script src="./api-config.js"></script>
+</head>
+<body>
+  <!-- Redirect to login if not authenticated -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await authGuard('./login.html');
+    });
+  </script>
+
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <img src="logo.png" alt="ChaRide Logo" class="sidebar-logo">
+      <p class="admin-badge">Admin Panel</p>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-item active" onclick="showSection('overview', event)">
+        <span class="sidebar-icon">📊</span>
+        <span class="sidebar-text">Overview</span>
+      </button>
+      <button class="sidebar-item" onclick="window.location.href='users.html'">
+        <span class="sidebar-icon">👥</span>
+        <span class="sidebar-text">Users</span>
+      </button>
+      <button class="sidebar-item" onclick="window.location.href='drivers.html'">
+        <span class="sidebar-icon">🚗</span>
+        <span class="sidebar-text">Drivers</span>
+      </button>
+      <button class="sidebar-item" onclick="window.location.href='rides.html'">
+        <span class="sidebar-icon">📍</span>
+        <span class="sidebar-text">Rides</span>
+      </button>
+      <button class="sidebar-item" onclick="showSection('analytics', event)">
+        <span class="sidebar-icon">📈</span>
+        <span class="sidebar-text">Analytics</span>
+      </button>
+      <button class="sidebar-item" onclick="showSection('support', event)">
+        <span class="sidebar-icon">💬</span>
+        <span class="sidebar-text">Support</span>
+      </button>
+      <button class="sidebar-item" onclick="showSection('settings', event)">
+        <span class="sidebar-icon">⚙️</span>
+        <span class="sidebar-text">Settings</span>
+      </button>
+    </nav>
+      <!-- Messages dropdown (moved into sidebar) -->
+      <button class="sidebar-item messages-item" id="messagesToggle" aria-haspopup="true" aria-expanded="false" title="Messages">
+        <span class="sidebar-icon">💬</span>
+        <span class="sidebar-text">Messages <span class="msg-badge" id="messagesBadge">0</span></span>
+      </button>
+
+      <div class="messages-dropdown" id="messagesDropdown" aria-hidden="true">
+        <div class="messages-header">
+          <strong>Messages</strong>
+          <button class="btn-secondary" id="markAllReadBtn">Mark all read</button>
+        </div>
+        <div class="messages-list" id="messagesList">
+          <!-- messages injected by JS -->
+        </div>
+        <div class="messages-footer">
+          <a href="#" class="btn-secondary">View all messages</a>
+        </div>
+      </div>
+    <button class="logout-btn sidebar-logout" id="logoutBtn">Logout</button>
+    <script>
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await signOut();
+        window.location.href = "./login.html";
+      });
+    </script>
+  </aside>
+
+  <main class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <h1>ChaRide Admin Dashboard</h1>
+      <div class="header-controls">
+        <input type="text" class="search-box" placeholder="Search...">
+        <button class="profile-btn" title="Profile">👤</button>
+      </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section active">
+      <h2>Dashboard Overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <p class="stat-label">Total Users</p>
+            <p class="stat-value" id="totalUsers">1,234</p>
+            <p class="stat-change positive">+12% this month</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🚗</div>
+          <div class="stat-content">
+            <p class="stat-label">Active Drivers</p>
+            <p class="stat-value" id="activeDrivers">342</p>
+            <p class="stat-change positive">+8% this month</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📍</div>
+          <div class="stat-content">
+            <p class="stat-label">Today's Rides</p>
+            <p class="stat-value" id="todayRides">567</p>
+            <p class="stat-change positive">+23% this week</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-content">
+            <p class="stat-label">Revenue Today</p>
+            <p class="stat-value" id="revenueToday">₱45,230</p>
+            <p class="stat-change positive">+5% vs yesterday</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-grid">
+        <div class="card">
+          <h3>Recent Rides</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Ride ID</th>
+                <th>Passenger</th>
+                <th>Driver</th>
+                <th>Status</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="recentRidesTbody">
+              <tr>
+                <td>#RD001</td>
+                <td>John Doe</td>
+                <td>Maria Santos</td>
+                <td><span class="badge completed">Completed</span></td>
+                <td>₱250</td>
+              </tr>
+              <tr>
+                <td>#RD002</td>
+                <td>Jane Smith</td>
+                <td>Juan Cruz</td>
+                <td><span class="badge active">Active</span></td>
+                <td>₱180</td>
+              </tr>
+              <tr>
+                <td>#RD003</td>
+                <td>Mike Johnson</td>
+                <td>Anna Garcia</td>
+                <td><span class="badge completed">Completed</span></td>
+                <td>₱320</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>System Status</h3>
+          <div class="status-list">
+            <div class="status-item">
+              <span class="status-name">Server Status</span>
+              <span class="status-indicator online"></span>
+            </div>
+            <div class="status-item">
+              <span class="status-name">Database</span>
+              <span class="status-indicator online"></span>
+            </div>
+            <div class="status-item">
+              <span class="status-name">API Gateway</span>
+              <span class="status-indicator online"></span>
+            </div>
+            <div class="status-item">
+              <span class="status-name">Payment System</span>
+              <span class="status-indicator online"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Users Section -->
+    <section id="users" class="section">
+      <div class="section-header">
+        <h2>Approve Users</h2>
+        <div class="filter-group">
+          <select class="filter-select" id="statusFilter" onchange="filterPendingUsers()">
+            <option value="all">All Status</option>
+            <option value="pending">Pending Approval</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <div id="noUsersMessage" class="no-data" style="display: none; text-align: center; padding: 40px;">
+          <p style="font-size: 18px; color: rgba(254, 243, 199, 0.6);">No pending users</p>
+        </div>
+        <table class="data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Signup Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pending-user" data-status="pending">
+              <td>#U001</td>
+              <td>John Doe</td>
+              <td>john@example.com</td>
+              <td>+63 912 345 6789</td>
+              <td>2026-02-03</td>
+              <td><span class="badge pending">Pending</span></td>
+              <td>
+                <button class="action-btn approve-btn" onclick="approveUser(this, '#U001')">Approve</button>
+                <button class="action-btn reject-btn" onclick="rejectUser(this, '#U001')">Reject</button>
+                <button class="action-btn" onclick="viewUserActivity('John Doe', '#U001')">Activity</button>
+              </td>
+            </tr>
+            <tr class="pending-user" data-status="pending">
+              <td>#U002</td>
+              <td>Jane Smith</td>
+              <td>jane@example.com</td>
+              <td>+63 923 456 7890</td>
+              <td>2026-02-04</td>
+              <td><span class="badge pending">Pending</span></td>
+              <td>
+                <button class="action-btn approve-btn" onclick="approveUser(this, '#U002')">Approve</button>
+                <button class="action-btn reject-btn" onclick="rejectUser(this, '#U002')">Reject</button>
+                <button class="action-btn" onclick="viewUserActivity('Jane Smith', '#U002')">Activity</button>
+              </td>
+            </tr>
+            <tr class="approved-user" data-status="approved" style="display: none;">
+              <td>#U003</td>
+              <td>Mike Johnson</td>
+              <td>mike@example.com</td>
+              <td>+63 934 567 8901</td>
+              <td>2026-02-01</td>
+              <td><span class="badge approved">Approved</span></td>
+              <td>
+                <button class="action-btn" onclick="viewUserActivity('Mike Johnson', '#U003')">Activity</button>
+              </td>
+            </tr>
+            <tr class="approved-user" data-status="approved" style="display: none;">
+              <td>#U004</td>
+              <td>Sarah Williams</td>
+              <td>sarah@example.com</td>
+              <td>+63 945 678 9012</td>
+              <td>2026-01-28</td>
+              <td><span class="badge approved">Approved</span></td>
+              <td>
+                <button class="action-btn" onclick="viewUserActivity('Sarah Williams', '#U004')">Activity</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Drivers Section -->
+    <section id="drivers" class="section">
+      <div class="section-header">
+        <h2>Approve Drivers</h2>
+        <div class="filter-group">
+          <select class="filter-select" id="driverStatusFilter" onchange="filterPendingDrivers()">
+            <option value="all">All Status</option>
+            <option value="pending">Pending Approval</option>
+            <option value="approved">Approved</option>
+            <option value="verified">Verified</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <table class="data-table" id="driversTable">
+          <thead>
+            <tr>
+              <th>Driver ID</th>
+              <th>Name</th>
+              <th>Vehicle</th>
+              <th>Rides Completed</th>
+              <th>Rating</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pending-driver" data-status="pending">
+              <td>#D001</td>
+              <td>Ramon Diaz</td>
+              <td>Tricycle (PUJ 555)</td>
+              <td>0</td>
+              <td>—</td>
+              <td><span class="badge pending">Pending</span></td>
+              <td>
+                <button class="action-btn approve-btn" onclick="approveDriver(this, '#D001')">Approve</button>
+                <button class="action-btn reject-btn" onclick="rejectDriver(this, '#D001')">Reject</button>
+                <button class="action-btn" onclick="viewDriverActivity('Ramon Diaz', '#D001')">Activity</button>
+              </td>
+            </tr>
+            <tr class="pending-driver" data-status="pending">
+              <td>#D002</td>
+              <td>Lucia Perez</td>
+              <td>Motorcycle (YD 888)</td>
+              <td>0</td>
+              <td>—</td>
+              <td><span class="badge pending">Pending</span></td>
+              <td>
+                <button class="action-btn approve-btn" onclick="approveDriver(this, '#D002')">Approve</button>
+                <button class="action-btn reject-btn" onclick="rejectDriver(this, '#D002')">Reject</button>
+                <button class="action-btn" onclick="viewDriverActivity('Lucia Perez', '#D002')">Activity</button>
+              </td>
+            </tr>
+            <tr class="approved-driver" data-status="approved" style="display: none;">
+              <td>#D003</td>
+              <td>Maria Santos</td>
+              <td>Tricycle (PUJ 123)</td>
+              <td>456</td>
+              <td>⭐ 4.8/5.0</td>
+              <td><span class="badge approved">Approved</span></td>
+              <td>
+                <button class="action-btn" onclick="viewDriverActivity('Maria Santos', '#D003')">Activity</button>
+              </td>
+            </tr>
+            <tr class="approved-driver" data-status="approved" style="display: none;">
+              <td>#D004</td>
+              <td>Juan Cruz</td>
+              <td>Motorcycle (YD 456)</td>
+              <td>389</td>
+              <td>⭐ 4.6/5.0</td>
+              <td><span class="badge approved">Approved</span></td>
+              <td>
+                <button class="action-btn" onclick="viewDriverActivity('Juan Cruz', '#D004')">Activity</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Rides Section -->
+    <section id="rides" class="section">
+      <div class="section-header">
+        <h2>All Rides</h2>
+        <div class="filter-group">
+          <select class="filter-select">
+            <option>All Status</option>
+            <option>Completed</option>
+            <option>Active</option>
+            <option>Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ride ID</th>
+              <th>Passenger</th>
+              <th>Driver</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#RD001</td>
+              <td>John Doe</td>
+              <td>Maria Santos</td>
+              <td>Downtown</td>
+              <td>Airport</td>
+              <td>2026-02-05</td>
+              <td>₱250</td>
+              <td><span class="badge completed">Completed</span></td>
+            </tr>
+            <tr>
+              <td>#RD002</td>
+              <td>Jane Smith</td>
+              <td>Juan Cruz</td>
+              <td>Mall</td>
+              <td>Hospital</td>
+              <td>2026-02-05</td>
+              <td>₱180</td>
+              <td><span class="badge active">Active</span></td>
+            </tr>
+            <tr>
+              <td>#RD003</td>
+              <td>Mike Johnson</td>
+              <td>Anna Garcia</td>
+              <td>Station</td>
+              <td>Beach</td>
+              <td>2026-02-05</td>
+              <td>₱320</td>
+              <td><span class="badge completed">Completed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section id="analytics" class="section">
+      <h2>Analytics & Reports</h2>
+      <div class="section-grid">
+        <div class="card">
+          <h3>Revenue by Month</h3>
+          <div class="chart-placeholder">
+            <p>📊 Chart: Monthly revenue trend</p>
+            <p style="font-size: 12px; color: #999;">Jan: ₱125K | Feb: ₱145K | Mar: ₱156K</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Rides by Vehicle Type</h3>
+          <div class="chart-placeholder">
+            <p>📊 Chart: Rides by type</p>
+            <p style="font-size: 12px; color: #999;">Tricycle: 65% | Motorcycle: 35%</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Top Drivers</h3>
+          <div class="top-list">
+            <div class="top-item">
+              <span class="rank">1</span>
+              <span class="name">Maria Santos</span>
+              <span class="value">456 rides</span>
+            </div>
+            <div class="top-item">
+              <span class="rank">2</span>
+              <span class="name">Anna Garcia</span>
+              <span class="value">512 rides</span>
+            </div>
+            <div class="top-item">
+              <span class="rank">3</span>
+              <span class="name">Juan Cruz</span>
+              <span class="value">389 rides</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>User Growth</h3>
+          <div class="chart-placeholder">
+            <p>📊 Chart: User growth trend</p>
+            <p style="font-size: 12px; color: #999;">+12% this month</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support Section -->
+    <section id="support" class="section">
+      <h2>Support Tickets</h2>
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>User</th>
+              <th>Subject</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#TK001</td>
+              <td>John Doe</td>
+              <td>Payment issue</td>
+              <td><span class="badge high">High</span></td>
+              <td><span class="badge active">Open</span></td>
+              <td>2026-02-04</td>
+              <td><button class="action-btn">Respond</button></td>
+            </tr>
+            <tr>
+              <td>#TK002</td>
+              <td>Jane Smith</td>
+              <td>App crash</td>
+              <td><span class="badge medium">Medium</span></td>
+              <td><span class="badge active">Open</span></td>
+              <td>2026-02-05</td>
+              <td><button class="action-btn">Respond</button></td>
+            </tr>
+            <tr>
+              <td>#TK003</td>
+              <td>Mike Johnson</td>
+              <td>Feature request</td>
+              <td><span class="badge low">Low</span></td>
+              <td><span class="badge completed">Resolved</span></td>
+              <td>2026-02-03</td>
+              <td><button class="action-btn">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings" class="section">
+      <h2>Settings</h2>
+      <div class="section-grid">
+        <div class="card settings-card">
+          <h3>General Settings</h3>
+          <div class="setting-item">
+            <label>Commission Rate (%)</label>
+            <input type="number" value="15" min="0" max="100">
+          </div>
+          <div class="setting-item">
+            <label>Min Fare (₱)</label>
+            <input type="number" value="50" min="0">
+          </div>
+          <div class="setting-item">
+            <label>Max Fare (₱)</label>
+            <input type="number" value="500" min="0">
+          </div>
+          <button class="btn-primary">Save Changes</button>
+        </div>
+        <div class="card settings-card">
+          <h3>Notification Settings</h3>
+          <div class="toggle-item">
+            <span>Email Notifications</span>
+            <input type="checkbox" checked>
+          </div>
+          <div class="toggle-item">
+            <span>SMS Alerts</span>
+            <input type="checkbox">
+          </div>
+          <div class="toggle-item">
+            <span>Daily Reports</span>
+            <input type="checkbox" checked>
+          </div>
+          <button class="btn-primary">Save Changes</button>
+        </div>
+        <div class="card settings-card">
+          <h3>System Settings</h3>
+          <div class="setting-item">
+            <label>Maintenance Mode</label>
+            <input type="checkbox">
+          </div>
+          <div class="setting-item">
+            <label>API Key</label>
+            <input type="text" value="sk_live_abc123xyz" readonly>
+            <button class="btn-secondary">Regenerate</button>
+          </div>
+          <button class="btn-primary">Save Changes</button>
+        </div>
+      </div>
+
+    </section>
+
+  <!-- User Activity Modal -->
+  <div class="modal" id="activityModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>User Activity - <span id="activityUserName"></span></h2>
+        <button class="modal-close" onclick="closeActivityModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="activity-stats">
+          <div class="activity-stat">
+            <p class="stat-label">Total Rides</p>
+            <p class="stat-value" id="activityTotalRides">0</p>
+          </div>
+          <div class="activity-stat">
+            <p class="stat-label">Spent</p>
+            <p class="stat-value" id="activityTotalSpent">₱0</p>
+          </div>
+          <div class="activity-stat">
+            <p class="stat-label">Last Ride</p>
+            <p class="stat-value" id="activityLastRide">—</p>
+          </div>
+          <div class="activity-stat">
+            <p class="stat-label">Rating</p>
+            <p class="stat-value" id="activityRating">—</p>
+          </div>
+        </div>
+
+        <h3>Monthly Activity</h3>
+        <div class="monthly-chart" id="monthlyChart" aria-hidden="false" title="Rides per day (last 30 days)">
+          <!-- Bars inserted by JS -->
+        </div>
+
+        <h3 style="margin-top:18px;">Recent Activity (Last 30 days)</h3>
+        <table class="activity-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Action</th>
+              <th>Details</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="activityLog">
+            <tr>
+              <td>2026-02-05</td>
+              <td>Booked Ride</td>
+              <td>Downtown → Airport</td>
+              <td><span class="badge completed">Completed</span></td>
+            </tr>
+            <tr>
+              <td>2026-02-04</td>
+              <td>Booked Ride</td>
+              <td>Mall → Hospital</td>
+              <td><span class="badge completed">Completed</span></td>
+            </tr>
+            <tr>
+              <td>2026-02-03</td>
+              <td>Account Created</td>
+              <td>User registered</td>
+              <td><span class="badge active">Created</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  </main>
+  <script src="admin-dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cha Ride | Sign Up</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(-45deg, #2e7d32, #66bb6a, #a5d6a7, #ffffff);
+  background-size: 400% 400%;
+  animation: gradientBG 8s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.signup-card {
+  width: 380px;
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  width: 90px;
+  height: 90px;
+  margin: auto;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  margin-bottom: 15px;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h2 {
+  text-align: center;
+  color: #2e7d32;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 14px;
+}
+
+.input-group label {
+  font-size: 13px;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 8px rgba(46,125,50,0.3);
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2e7d32;
+  font-size: 20px;
+  padding: 5px 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle:hover {
+  color: #256628;
+  transform: translateY(-50%) scale(1.2);
+}
+
+.password-toggle:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+@keyframes eyePulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.signup-btn {
+  display: block;
+  width: 100%;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+  text-align: center;
+  text-decoration: none;
+}
+
+.signup-btn:hover {
+  background: #256628;
+  box-shadow: 0 0 15px rgba(46,125,50,0.6);
+}
+
+
+.extra {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.extra a {
+  color: #2e7d32;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.extra a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="signup-card">
+
+  <div class="logo">
+    <img src="logo.png" alt="Cha Ride Logo">
+  </div>
+
+  <h2>Create Account</h2>
+  <div class="subtitle">Join Cha Ride Today</div>
+
+  <form>
+    <div class="input-group">
+      <label for="signupName">Full Name</label>
+      <input type="text" id="signupName" placeholder="Enter your full name" required>
+    </div>
+
+    <div class="input-group">
+      <label for="signupEmail">Email</label>
+      <input type="email" id="signupEmail" placeholder="Enter your email" required>
+    </div>
+
+    <div class="input-group">
+      <label for="signupPassword">Password</label>
+      <div class="password-container">
+        <input type="password" id="signupPassword" placeholder="Create a password" required>
+        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">👁️</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="vehicleType">Vehicle Type</label>
+      <input type="text" id="vehicleType" placeholder="Motorcycle, Tricycle, etc" required>
+    </div>
+
+    <div class="input-group">
+      <label for="vehiclePlate">Vehicle Plate</label>
+      <input type="text" id="vehiclePlate" placeholder="Plate number" required>
+    </div>
+
+    <div class="input-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <div class="password-container">
+        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+      </div>
+    </div>
+
+  <button type="submit" class="signup-btn" id="signupBtn">Sign Up</button>
+
+  </form>
+
+  <div id="loading" style="margin-top: 15px; display: none; text-align: center; color: #2e7d32;">
+    <p>Creating your account...</p>
+  </div>
+
+  <div id="message" style="margin-top: 15px; padding: 10px; border-radius: 5px; display: none; text-align: center;"></div>
+
+  <div class="extra">
+    Already have an account? <a href="login.html">Login</a>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+const API_BASE_URL = window.API_BASE_URL || window.location.origin;
+
+document.querySelector('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const btn = document.getElementById('signupBtn');
+  const loadingDiv = document.getElementById('loading');
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const confirm = document.getElementById('confirmPassword').value;
+  const vehicleType = document.getElementById('vehicleType').value.trim();
+  const vehiclePlate = document.getElementById('vehiclePlate').value.trim();
+  
+  // Validation
+  if (!name) {
+    showMessage('Please enter your full name', 'error');
+    return;
+  }
+  
+  if (password !== confirm) {
+    showMessage('Passwords do not match', 'error');
+    return;
+  }
+  
+  if (password.length < 6) {
+    showMessage('Password must be at least 6 characters', 'error');
+    return;
+  }
+  
+  // Disable button and show loading
+  btn.disabled = true;
+  btn.textContent = 'Creating account...';
+  loadingDiv.style.display = 'block';
+  document.getElementById('message').style.display = 'none';
+  
+  try {
+    const response = await fetch(API_BASE_URL.replace(/\/+$/, '') + '/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password,
+        full_name: name,
+        role: 'driver',
+        vehicle_type: vehicleType,
+        vehicle_plate: vehiclePlate
+      })
+    });
+
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : null;
+
+    if (!response.ok) {
+      throw new Error((data && (data.error || data.message)) || 'Sign up failed');
+    }
+
+    console.log('Signup successful, redirecting to follow-up form');
+    loadingDiv.style.display = 'none';
+    // Save returned user profile so follow-up form can continue
+    try {
+      const toStore = (data && (data.user || data)) || null;
+      if (toStore) {
+        localStorage.setItem('charide_user', JSON.stringify(toStore));
+      } else {
+        console.warn('Signup did not return a user object', data, response.status);
+      }
+    } catch (e) {
+      console.warn('Failed to save user to localStorage', e);
+    }
+    Swal.fire({
+      icon: 'success',
+      title: "You're registered",
+      text: 'Now fill out your additional information',
+      confirmButtonColor: '#0aa812'
+    }).then(() => {
+      console.log('Popup confirmed, redirecting...');
+      // attempt to include userId in query so follow-up can continue even if localStorage is cleared
+      try {
+        const stored = JSON.parse(localStorage.getItem('charide_user')) || null;
+        const uid = stored && (stored.id || stored.user_id || (stored.user && stored.user.id));
+        const target = './signup.htmlversion-2.html' + (uid ? ('?userId=' + encodeURIComponent(uid)) : '');
+        window.location.replace(target);
+      } catch (e) {
+        window.location.replace('./signup.htmlversion-2.html');
+      }
+    });
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Sign Up';
+    loadingDiv.style.display = 'none';
+    showMessage('Error: ' + err.message, 'error');
+  }
+});
+
+function togglePassword(inputId) {
+  const input = document.getElementById(inputId);
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function showMessage(msg, type) {
+  const msgDiv = document.getElementById('message');
+  const loadingDiv = document.getElementById('loading');
+  msgDiv.textContent = msg;
+  msgDiv.style.display = 'block';
+  msgDiv.style.backgroundColor = type === 'error' ? '#ffdddd' : '#ddffdd';
+  msgDiv.style.color = type === 'error' ? '#cc0000' : '#00aa00';
+  loadingDiv.style.display = 'none';
+}
+</script>
+
+</body>
+</html>
